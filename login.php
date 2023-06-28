@@ -1,8 +1,10 @@
 <?php
+include "config/config.php";
+
 session_start();
 $user = $_POST['username'];
 $password = $_POST['password'];
-include "config/config.php";
+
 
 $read_query = "SELECT * from student where email='".$user."' and password='".$password."'";
    $result = $myConnection->query($read_query);
