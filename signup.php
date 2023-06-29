@@ -26,17 +26,17 @@ $("#submit").click(function() {
         let password = $("#password").val();
 		let date = $("#date").val();
 		let address = $("#address").val();
-		let male = $("#male").val();
-		let female = $("#female").val();
-        let gender =  $("#gender").val();
+		// let male = $("#male").val();
+		// let female = $("#female").val();
+        // let gender =  $("#gender").val();
 		
 		
 		if(name == ""){
 			$("#nameerr").html("Please enter Your Name");
-			return false
+			return false;
 		}else if(!name.match(/^[a-zA-Z]+$/)){
 			$("#nameerr").html("Only Alphabets are allowed");
-				return false
+				return false;
 		}else{
 			$("#nameerr").hide();
 		}
@@ -50,21 +50,21 @@ $("#submit").click(function() {
 		
         if(number ==""){
 			$("#numbererr").html("Please Enter Mobile Number");
-				return false
+				return false;
 		}
 		else if (number.length != 10){
 				$("#numbererr").html(" Mobile Number is not valid");
-					return false
+					return false;
 		}
 		else{
 			$("#numbererr").hide();
 		}
         if(password == ""){
 			$("#passworderr").html("Please Enter Password")
-			return false
+			return false;
 		} else if (!password.match(/[!@#$%^&*]+$/) ){
 			$("#passworderr").html("Please enter Strong Password")
-			return false
+			return false;
 		}
 		else{
 			$("#passworderr").hide()
@@ -80,7 +80,7 @@ $("#submit").click(function() {
         
         else if (selectedDate > minDate) {
          $("#dateerr").html("You must be 18 years or older.");
-		 	return false
+		 	return false;
         } else{
 			$("#dateerr").hide();
 		}
@@ -91,13 +91,15 @@ $("#submit").click(function() {
         else{
             $("#addresserr").hide();
         }
-        if(male == "" && female == ""){
-            $("#gendererr").html("Please Select Gender");
-            return false;
+        var gender = $('.gender').val();
+        if ($(".gender:checked").length > 1 || $(".gender:checked").length == 0){
+        $('#gendererr').slideDown().html('<span id="gendererr">Please choose a gender</span>');
+        return false;
         }
         else{
-            $("#gendererr").hide();
+        $("#gendererr").hide();
         }
+
 
 	// Insert Data
 $.ajax({
@@ -132,8 +134,8 @@ $.ajax({
     <input id="address" type="text" name="address" id="address" > 
     <br>
     <label>Gender</label><span id="gendererr" class="error">* </span><br><br>
-    <span>Male</span><input type="radio" name="gender" value="male" id="male" >
-    <span>Female</span><input type="radio" name="gender" value="female" id="female" <br>
+    <span>Male</span><input type="radio" name="gender" value="male" id="male" class="gender">
+    <span>Female</span><input type="radio" name="gender" value="female" id="female" class="gender"> <br>
     <br>
     <input id="submit" type="submit" name="sub" value="Register here">
     <br>
