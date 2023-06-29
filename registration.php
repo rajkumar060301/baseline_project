@@ -12,7 +12,7 @@
         if (mysqli_num_rows($result) > 0) {
                     // $message = "Email ID Already Exists !!";
                     echo "<script>alert('Email ID Already Exists !!')</script>)";
-                    echo "<script>location.href='signup.html'</script>";
+                    echo "<script>location.href='signup.php'</script>";
                 }
                 else{
                     // echo "Data not found";
