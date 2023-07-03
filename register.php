@@ -19,7 +19,7 @@
       $row = mysqli_fetch_assoc($result);
       $name = $row["fname"];
       $email= $row["email"];
-        $number = $row["number"];
+      $number = $row["number"];
       $password = $row["password"];
       $date = $row["dob"];
       $address = $row["address"];
