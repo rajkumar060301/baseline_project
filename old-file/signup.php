@@ -53,6 +53,72 @@ if(mysqli_num_rows($result)>0){
 ?>
 
 
+
+
+</head>
+<body>
+
+<?php 
+if(!isset($_GET['update'])){
+$id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address =""; $gender="";
+
+}
+
+?>
+<div id="form-div"  style="border:1px solid black;background-color:whitesmoke">
+<h3 style="text-align: center;">Welcome to register page</h3>
+<h5 style="color: red;"></h5>
+ <form id = "basic-form"  action="" method="post" >
+    <label>Full name</label><span id="nameerr" class="error">* </span><br>
+    <input id="name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
+    <br>
+    <label>Email</label><span id="emailerr" class="error">* </span><br>
+    <input id="email" type="email" name="email" value="<?php if($email !=""){ echo $email; }?>">
+    <br>
+    <label>Phone</label><span id="numbererr" class="error">* </span><br>
+    <input id="number" type="text" name="number"  value="<?php if($number !=""){ echo $number; }?>">
+    <br>
+    <label>Password</label><span id="passworderr" class="error">* </span><br>
+    <input id="password" type="password" name="password" value="<?php if($password !=""){ echo $password; }?>">
+    <br>
+    <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
+    <input id="date" type="date" name="dob" value="<?php if($date !=""){ echo $date; }?>">
+    <br>
+    <label>Address</label><span id="addresserr" class="error">* </span><br>
+    <input id="address" type="text" name="address" id="address" value="<?php if($address != ""){ echo $address;} ?>"> 
+    <br>
+    <label>Gender</label><span id="gendererr" class="error">* </span><br>
+    <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender">
+    <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender"> <br>
+    <br>
+    <!-- <input id="submit" type="submit" name="sub" value="Register here"> -->
+			
+    <!-- <div class="form-group">
+            <button type="submit" id="submit" name="submit" class="btn btn-primary btn-block"> Register here  </button>
+    </div> -->
+    <?php if( $id !="" and $type == "update"){  ?>             
+    <div class="form-group">
+        <button type="submit" id="update" class="btn btn-primary btn-block"> Update</button>
+    </div>   
+<?php 
+					}else{
+?>						
+            <div class="form-group">
+        <button type="submit" id="submit" class="btn btn-primary btn-block"> Create Account  </button>
+    </div>  
+<?php 
+					}
+?>
+    <br>
+    <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div>
+ </form>
+</div>
+
+<div id="table-container"></div>
+<div id="data-container"></div>
+
+
+
 <script>  
 // $(document).ready (function () {  
 //   $("#basic-form").validate ();  
@@ -168,10 +234,11 @@ $("#submit").click(function() {
         }
 
 	// Insert Data
-$.ajax({
+    $.ajax({
   method: "POST",
   url: "registration.php",
-  data: {action:"registration", 
+  data: {
+        action:"registration", 
         fname:name,
         email:email,
         number:number,
@@ -179,8 +246,14 @@ $.ajax({
         dob:date,
         address : address,
         gender:gen_value 
+    },
+    success: function(data){
+       console.log(data);
     }
-})
+}).done(function(data){
+    alert(data);
+    // document.getElementById('data-container').innerHTML = data;
+});
  
 	});	
     // Select Data 
@@ -212,7 +285,7 @@ $.ajax({
   }
 	
   });
-					}
+}
 					
 					
 	// Update Data 	
@@ -329,69 +402,6 @@ $("#update").click(function(e){
 });
 });
 </script> 
-
-</head>
-<body>
-
-<?php 
-if(!isset($_GET['update'])){
-$id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address =""; $gender="";
-
-}
-
-?>
-<div id="form-div"  style="border:1px solid black;background-color:whitesmoke">
-<h3 style="text-align: center;">Welcome to register page</h3>
-<h5 style="color: red;"></h5>
- <form id = "basic-form"  action="" method="post" >
-    <label>Full name</label><span id="nameerr" class="error">* </span><br>
-    <input id="name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
-    <br>
-    <label>Email</label><span id="emailerr" class="error">* </span><br>
-    <input id="email" type="email" name="email" value="<?php if($email !=""){ echo $email; }?>">
-    <br>
-    <label>Phone</label><span id="numbererr" class="error">* </span><br>
-    <input id="number" type="text" name="number"  value="<?php if($number !=""){ echo $number; }?>">
-    <br>
-    <label>Password</label><span id="passworderr" class="error">* </span><br>
-    <input id="password" type="password" name="password" value="<?php if($password !=""){ echo $password; }?>">
-    <br>
-    <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
-    <input id="date" type="date" name="dob" value="<?php if($date !=""){ echo $date; }?>">
-    <br>
-    <label>Address</label><span id="addresserr" class="error">* </span><br>
-    <input id="address" type="text" name="address" id="address" value="<?php if($address != ""){ echo $address;} ?>"> 
-    <br>
-    <label>Gender</label><span id="gendererr" class="error">* </span><br>
-    <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender">
-    <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender"> <br>
-    <br>
-    <!-- <input id="submit" type="submit" name="sub" value="Register here"> -->
-			
-    <!-- <div class="form-group">
-            <button type="submit" id="submit" name="submit" class="btn btn-primary btn-block"> Register here  </button>
-    </div> -->
-    <?php if( $id !="" and $type == "update"){  ?>             
-    <div class="form-group">
-        <button type="submit" id="update" class="btn btn-primary btn-block"> Update</button>
-    </div>   
-<?php 
-					}else{
-?>						
-            <div class="form-group">
-        <button type="submit" id="submit" class="btn btn-primary btn-block"> Create Account  </button>
-    </div>  
-<?php 
-					}
-?>
-    <br>
-    <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div>
- </form>
-</div>
-
-<div id="table-container"></div>
-
-
     
 </body>
 </html>

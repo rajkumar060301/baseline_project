@@ -1,149 +1,164 @@
-<?php
-include './config/config.php';
-// $name = $_POST['fname'];
-// $email = $_POST['email'];
-// $number = $_POST['number'];
-// $password = $_POST['password'];
-// $dob = $_POST['dob'];
-// $address = $_POST['address'];
-// $gender = $_POST['gender'];
-
-$nameErr = $emailErr= $numberErr= $passwordErr= $dobErr=$addressErr=$genderErr ='';
-$name = $email= $number= $password=$address=$gender ='';
-$dob = '0000-00-00';
-$message ='';
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(empty($_POST['fname'])){
-        $nameErr = "Name is requred";
-    }
-    else{
-        $name = test_input($_POST['fname']);
-    }
-    if(empty($_POST['email'])){
-        $emailErr = "email is requred";
-    }
-    else{
-        $email = $_POST['email'];
-        }
-    if(empty($_POST['number'])){
-        $numberErr = "number is requred";
-    }
-    else{
-        $number = $_POST['number'];
-    }
-    if(empty($_POST['password'])){
-        $passwordErr = "password is requred";
-    }
-    else{
-        $password = $_POST['password'];
-    }
-    if(empty($_POST['dob'])){
-        $dobErr = "dob is requred";
-    }
-    else{
-        $dob = $_POST['dob'];
-    }
-    if(empty($_POST['address'])){
-        $addressErr = "address is requred";
-    }
-    else{
-        $address = $_POST['address'];
-    }
-    if(empty($_POST['gender'])){
-        $genderErr = "gender is requred";
-    }
-    else{
-        $gender = $_POST['gender'];
-    }
-
-}
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
-
-
-    if($name != '' && $email != '' && $number != '' && $password != '' && $dob != '0000-00-00' && $address != '' && $gender != ''){
-        $query = "SELECT * FROM `student` WHERE `email` = '$email'";
-        $result = mysqli_query($myConnection,$query);
-        if (mysqli_num_rows($result) > 0) {
-         $row = mysqli_fetch_assoc($result);
-         if($email==isset($row['email'])){
-                $message = "Email ID Already Exists !!";
-                // echo "<script>alert('Email ID Already Exists !!')</script>)";
-                // echo "<script>location.href='register.php'</script>";
-         }
-         else{
-            echo "Data not found";
-         }
-        }
-    
-        else{
-            $insert = "INSERT INTO `student`(`fname`,`email`,`number`,`password`,`dob`,`address`,`gender`) 
-            VALUES('$name','$email','$number','$password','$dob','$address','$gender')";
-            
-            if(mysqli_query($myConnection,$insert)){
-                echo "<script>alert('Data inserted successfully !!')</script>";
-                // $message = "Data Inserted";
-                echo "<script>location.href='login.html'</script>";
-            
-            }
-            else{
-            echo "Data Not Inserted";
-            }
-        }
-    
-
-      }
-      
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src='javascript/script.js'></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" type="text/css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <?php
+    include './config/config.php';
+    if(isset($_GET['id'])){
+    $id = $_GET['id'];
+    $type = $_GET['type'];
+
+    $query = "select * from `student` where `id` = {$id}";
+    $result = mysqli_query($myConnection,$query);
+    if(mysqli_num_rows($result)>0){
+      $row = mysqli_fetch_assoc($result);
+      $name = $row["fname"];
+      $email= $row["email"];
+        $number = $row["number"];
+      $password = $row["password"];
+      $date = $row["dob"];
+      $address = $row["address"];
+      $gender = $row["gender"];
+
+    }
+    else{
+      echo "wrong id";
+    }
+    }
+
+
+    ?>
+    <script>
+
+      var id = "<?php echo $id;?>";
+      var type = "<?php echo $type;?>";
+      
+    </script>
 </head>
 <body>
-<div id="form-div" >
-<h3>Welcome to register page</h3>
-<h5 style="color: red;"><?php echo $message; ?></h5>
- <form  action="" method="post" >
-    <label>Full name</label><span class="error">* <?php echo $nameErr;?></span><br>
-    <input type="text" name="fname">
+
+<div id="form-div"  style="border:1px solid black;background-color:whitesmoke;margin-top: 20px;">
+<h3 style="text-align: center;">Welcome to register page</h3>
+<h5 id="show-error"  style="color: red;"> </h5>
+ <form id = "basic-form"  action="" method="post" >
+    <label>Full name</label><span id="nameerr" class="error">* </span><br>
+    <input id="name" name="fname" minlength="8" type="text" value="">
     <br>
-    <label>Email</label><span class="error">* <?php echo $emailErr;?></span><br>
-    <input type="email" name="email">
+    <label>Email</label><span id="emailerr" class="error">* </span><br>
+    <input id="email" type="email" name="email" value="">
     <br>
-    <label>Phone</label><span class="error">* <?php echo $numberErr;?></span><br>
-    <input type="text" name="number">
+    <label>Phone</label><span id="numbererr" class="error">* </span><br>
+    <input id="number" type="text" name="number"  value="">
     <br>
-    <label>Password</label><span class="error">* <?php echo $passwordErr;?></span><br>
-    <input type="password" name="password">
+    <label>Password</label><span id="passworderr" class="error">* </span><br>
+    <input id="password" type="password" name="password" value="" autocomplete="on">
     <br>
-    <label>Date of Birth</label><span class="error">* <?php echo $dobErr;?></span><br>
-    <input type="date" name="dob">
+    <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
+    <input id="date" type="date" name="dob" value="">
     <br>
-    <label>Address</label><span class="error">* <?php echo $addressErr;?></span><br>
-    <input type="text" name="address">
+    <label>Address</label><span id="addresserr" class="error">* </span><br>
+    <input id="address" type="text" name="address" id="address" value=""> 
     <br>
-    <label>Gender</label><span class="error">* <?php echo $genderErr;?></span><br><br>
-    <span>Male</span><input type="radio" name="gender" value="male">
-    <span>Female</span><input type="radio" name="gender" value="female"><br>
+    <label>Gender</label><span id="gendererr" class="error">* </span><br>
+    <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender">
+    <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender"> <br>
     <br>
-    <input type="submit" name="sub" value="Register here">
+    <!-- <input id="submit" type="submit" name="sub" value="Register here"> -->
+    <button  id="submit" type="submit" class="btn btn-primary btn-block"> Create Account  </button>
+
+		
     <br>
-    <div class="text-center" style="color: black;">Already have an account? <a href="login.html">Login here</a></div>
+    <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div>
  </form>
 </div>
 
+<!-- <div id="table-container"></div> -->
+<div id="data-container"></div>
 
 
-    
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript">
+   $(document).ready(function(){
+
+$("#submit").click(function(event) {
+    event.preventDefault();
+
+		let name = $("#name").val();
+		let email = $("#email").val();
+        let number = $("#number").val();
+        let password = $("#password").val();
+		let date = $("#date").val();
+		let address = $("#address").val();
+        var gender = $(".gender").val();
+
+        var ele = document.getElementsByName('gender');
+        var gen_value = "";
+
+        for (i = 0; i < ele.length; i++) {
+                ele[i].checked ? gen_value=ele[i].value : "error";
+        } 
+  $.ajax({
+  method: "POST",
+  url: "insert.php",
+  data: {
+        action:"insert", 
+        fname:name,
+        email:email,
+        number:number,
+        password:password,
+        dob:date,
+        address : address,
+        gender:gen_value 
+    }
+
+    ,
+    success: function(data){
+    $('#data-container').html(data);
+    }
+});
+
+
+ 
+	});	
+    $.ajax({
+  method: "GET",
+  url: "retrive.php",
+  data: {action:"retrive"}
+})
+  .done( function( msg ) {
+
+       $("#data-container").html(msg); 
+	  
+  });
+
+    //delete data
+						
+    if( type == "delete"){
+					$.ajax({
+					  method: "POST",
+                      url: "delete.php",
+                      data: {action:"delete",deleteid:id}
+})
+  .done(function( msg ) {
+      // alert(msg);
+	  
+	    if(msg != ""){
+	  window.location.href = "register.php";
+	  
+  }
+	
+  });
+}
+
+
+});
+
+</script>
+
 </body>
 </html>

@@ -57,8 +57,9 @@ $result = mysqli_query($myConnection,$query);
             <td><?php echo $row["dob"];?></td>
             <td><?php echo $row["address"];?></td>
             <td><?php echo $row["gender"];?></td>
-            <td><button type="button" class="btn btn-danger" ><a href="signup.php?id=<?php  echo $row["id"];?>&type=delete">Delete</a></button></td>
-            <td><button type="button" class="btn btn-success"><a href="signup.php?id=<?php  echo $row["id"];?>&type=update&update=updateid">Update</a></button></td>
+            <td><button id="<?php echo $row['id']; ?>" class="delbutton">Delete</button></td>
+            <!-- <td><button type="button" class="btn btn-danger" ><a href="register.php?id=<?php  echo $row["id"];?>&type=delete">Delete</a></button></td> -->
+            <td><button type="button" class="btn btn-success"><a href="register.php?id=<?php  echo $row["id"];?>&type=update&update=updateid">Update</a></button></td>
 			<?php
      echo   "</tr>";
 			}
@@ -66,5 +67,27 @@ $result = mysqli_query($myConnection,$query);
  echo "</table>";
 		}
 		?>
+        <script type="text/javascript" >
+        $(function() {
+
+            $(".delbutton").click(function() {
+                var del_id = $(this).attr("id");
+                var info = 'id=' + del_id;
+                if (confirm("Sure you want to delete this post? This cannot be undone later.")) {
+                    $.ajax({
+                        type : "POST",
+                        url : "delete.php", //URL to the delete php script
+                        data : info,
+                        success : function() {
+                        }
+                    });
+                    $(this).parents(".record").animate("fast").animate({
+                        opacity : "hide"
+                    }, "slow");
+                }
+                return false;
+            });
+        });
+ </script>
 </body>
 </html>
