@@ -5,6 +5,7 @@ a{text-decoration:none; color:white}
 a:hover{text-decoration:none; color:white}
 
 </style>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -59,8 +60,10 @@ $result = mysqli_query($myConnection,$query);
             <td><?php echo $row["gender"];?></td>
             <td ><button id="<?php echo $row['id']; ?>" class="btn btn-danger delbutton">Delete</button></td>
             <!-- <td><button type="button" class="btn btn-danger" ><a href="register.php?id=<?php  echo $row["id"];?>&type=delete">Delete</a></button></td> -->
+            <!-- <td><button type="button" class="btn btn-success"><a href="register.php?id=<?php  echo $row["id"];?>&type=update&update=updateid">Update</a></button></td> -->
             <td><button type="button" class="btn btn-success"><a href="register.php?id=<?php  echo $row["id"];?>&type=update&update=updateid">Update</a></button></td>
-			<?php
+
+            <?php
      echo   "</tr>";
 			}
     echo "</tbody>";
