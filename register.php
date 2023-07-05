@@ -11,14 +11,17 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
+
 
     <?php
     include './config/config.php';
+    $id =  '<script>document.write(userId)</script>';
     if(isset($_GET['id'])){
-    $id = $_GET['id'];
-    $type = $_GET['type'];
+    // $id = $_GET['id'];
+    $type = 'updateid';
 
     $query = "select * from `student` where `id` = {$id}";
     $result = mysqli_query($myConnection,$query);
@@ -40,12 +43,6 @@
 
 
     ?>
-    <script>
-
-      var id = "<?php echo $id;?>";
-      var type = "<?php echo $type;?>";
-      
-    </script>
 </head>
 <body>
 <?php 
@@ -55,11 +52,12 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
 }
 
 ?>
+
 <div id="form-div"  style="border:1px solid black;background-color:whitesmoke;margin-top: 20px;">
 <h3 style="text-align: center;">Welcome to register page</h3>
 
 
-<h5 id="show-error"  style="color: red;"> </h5>
+<h5 id="show-error"  style="color: red;"><?php echo '<script>document.write(userId)</script>'; ?> </h5>
 <form id = "basic-form"  action="" method="post" >
     <label>Full name</label><span id="nameerr" class="error">* </span><br>
     <input id="name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
@@ -83,11 +81,7 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
     <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender" <?php if('Male'==$gender) echo 'checked'; ?>>
     <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" <?php if('Female'==$gender) echo 'checked'; ?>> <br>
     <br>
-    <!-- <input id="submit" type="submit" name="sub" value="Register here"> -->
-			
-    <!-- <div class="form-group">
-            <button type="submit" id="submit" name="submit" class="btn btn-primary btn-block"> Register here  </button>
-    </div> -->
+
     <?php if( $id !="" and $type == "update"){  ?>             
     <div class="form-group">
         <button type="submit" id="update" class="btn btn-primary btn-block"> Update</button>
@@ -105,6 +99,7 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
     <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div>
  </form>
 </div>
+<!-- <?php echo '<div id="show-data"></div>'; ?> -->
 
 <!-- <div id="table-container"></div> -->
 <div id="data-container"></div>
@@ -112,8 +107,32 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script type="text/javascript">
-   $(document).ready(function(){
+  //  function getUserDetails(id){
+  //     // id.preventDefault();
+  //     var userId = id
+   
+  //   //  document.getElementById('show-error').innerHTML +=id;
+  //    alert("your is is:" + id)
+  //   // $('#hidden_user_id').val(id);
+  //   // // console.log(id);
+  //   // $.post("retrive.php",{
+  //   //   id : id
+  //   // },function(data,status){
+  //   //   var user = JSON.parse(data);
+  //   //   $('#update_name').val(user.fname);
+  //   //   $('#update_email').val(user.email);
+  //   //   $('#update_number').val(user.number);
+  //   //   $('#update_password').val(user.password);
+  //   //   $('#update_date').val(user.dob);
+  //   //   $('#update_address').val(user.address);
+  //   //   $('#update_gender').val(user.gender);
+  //   // });
+  //   // $('#update_user_modal').modal('show');
+    
 
+  // };
+   $(document).ready(function(){
+ 
 $("#submit").click(function(event) {
     event.preventDefault();
 
@@ -184,7 +203,10 @@ $("#submit").click(function(event) {
 	
   });
 }
+
+
 $("#update").click(function(e){
+  e.preventDefault();
     let name = $("#name").val();
 		let email = $("#email").val();
     let number = $("#number").val();
@@ -218,24 +240,20 @@ $("#update").click(function(e){
 
 					  })
 
-            .done(function( msg) {
-                alert(msg);
+            .done(function() {
+                // alert(msg);
                 // location.reload(true);
-                // window.location.href = "register.php";
+                window.location.href = "./register.php";
 
                 
                     if(msg != ""){
                 window.location.href = "register.php";
-                // location.reload(true);
 
                 
             }
             });
-  
-	
-}).done(function(){
-  location.reload();
-})
+
+});
 
 
 });
