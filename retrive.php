@@ -22,6 +22,92 @@ $(document).ready(function () {
 
 </head>
 <body>
+<?php 
+    include './config/config.php';
+    // $id =  '<script>document.write(userId)</script>';
+    if(isset($row['id'])){
+    // $id = $_GET['id'];
+    // $type = 'updateid';
+
+    $query = "select * from `student` where `id` = {$id}";
+    $result = mysqli_query($myConnection,$query);
+    if(mysqli_num_rows($result)>0){
+      $row = mysqli_fetch_assoc($result);
+      $name = $row["fname"];
+      $email= $row["email"];
+      $number = $row["number"];
+      $password = $row["password"];
+      $date = $row["dob"];
+      $address = $row["address"];
+      $gender = $row["gender"];
+
+    }
+    else{
+      echo "wrong id";
+    }
+    }
+
+if(!isset($row['id'])){
+$id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address =""; $gender="";
+
+}
+
+?>
+    <!-- Trigger the modal with a button -->
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog" data-target="#myModal">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4> -->
+      </div>
+      <div class="modal-body">
+        <!-- <p>Some text in the modal.</p> -->
+        <form id = "basic-form"  action="" method="post" >
+    <label>Full name</label><span id="nameerr" class="error">* </span><br>
+    <input id="update_name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
+    <br>
+    <label>Email</label><span id="emailerr" class="error">* </span><br>
+    <input id="update_email" type="email" name="email" value="<?php if($email !=""){ echo $email; }?>">
+    <br>
+    <label>Phone</label><span id="numbererr" class="error">* </span><br>
+    <input id="update_number" type="text" name="number"  value="<?php if($number !=""){ echo $number; }?>">
+    <br>
+    <label>Password</label><span id="passworderr" class="error">* </span><br>
+    <input id="update_password" type="password" name="password" value="<?php if($password !=""){ echo $password; }?>">
+    <br>
+    <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
+    <input id="update_date" type="date" name="dob" value="<?php if($date !=""){ echo $date; }?>">
+    <br>
+    <label>Address</label><span id="addresserr" class="error">* </span><br>
+    <input id="update_address" type="text" name="address" id="address" value="<?php if($address != ""){ echo $address;} ?>"> 
+    <br>
+    <label>Gender</label><span id="gendererr" class="error">* </span><br>
+    <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender" <?php if('Male'==$gender) echo 'checked'; ?>>
+    <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" <?php if('Female'==$gender) echo 'checked'; ?>> <br>
+    <br>
+            
+    <div class="form-group">
+        <button type="button" id="update" class="btn btn-primary btn-block" onclick="updateUserDetail()"> Update</button>
+    </div>   
+    <br>
+    <!-- <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div> -->
+ </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <input type="hidden" name='' id="hidden_user">
+      </div>
+    </div>
+
+  </div>
+</div>
 <table id="example" class="display" style="width:100%">
     <thead>
         <tr>
@@ -40,11 +126,13 @@ $(document).ready(function () {
     <tbody>
 
 <?php
-include './config/config.php';
+// include './config/config.php';
 
 $query = "select * from student";
 $result = mysqli_query($myConnection,$query);
 		if(mysqli_num_rows($result)>0){
+            // $number = 1;
+
 			while($row = mysqli_fetch_assoc($result)){
 				?>
 			
@@ -60,14 +148,15 @@ $result = mysqli_query($myConnection,$query);
             <td><?php echo $row["gender"];?></td>
             <td ><button id="<?php echo $row['id']; ?>" class="btn btn-danger delbutton">Delete</button></td>
             <!-- <td><button type="button" class="btn btn-danger" ><a href="register.php?id=<?php  echo $row["id"];?>&type=delete">Delete</a></button></td> -->
+            <td><button type="button" class="btn btn-success" onclick="getUserDetails(<?php echo $row['id']; ?>)" data-toggle="modal" data-target="#myModal">Update</button></td>
             <!-- <td><button type="button" class="btn btn-success"><a href="register.php?id=<?php  echo $row["id"];?>&type=update&update=updateid">Update</a></button></td> -->
-            <td><button type="button" class="btn btn-success"><a href="register.php?id=<?php  echo $row["id"];?>&type=update&update=updateid">Update</a></button></td>
 
             <?php
      echo   "</tr>";
 			}
     echo "</tbody>";
  echo "</table>";
+//  $number++;
 		}
 		?>
         <script type="text/javascript" >
