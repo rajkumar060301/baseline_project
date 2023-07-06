@@ -18,7 +18,7 @@
 
     <?php
     include './config/config.php';
-    // $_GET['id'] = $_POST['myValue '];
+    // $_GET['id'] = $_POST['id'];
     if(isset($_GET['id'])){
     $id = $_GET['id'];
     $type = 'updateid';
@@ -57,7 +57,7 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
 <h3 style="text-align: center;">Welcome to register page</h3>
 
 
-<h5 id="show-error"  style="color: red;"><?php echo '<script>document.write(userId)</script>'; ?> </h5>
+<h5 id="show-error"  style="color: red;"> </h5>
 <form id = "basic-form"  action="" method="post" >
     <label>Full name</label><span id="nameerr" class="error">* </span><br>
     <input id="name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
@@ -82,31 +82,88 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
     <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" <?php if('Female'==$gender) echo 'checked'; ?>> <br>
     <br>
 
-    <?php if( $id !="" and $type == "update"){  ?>             
+    <!-- <?php if( $id !="" and $type == "update"){  ?>             
     <div class="form-group">
         <button type="submit" id="update" class="btn btn-primary btn-block"> Update</button>
     </div>   
 <?php 
 					}else{
-?>						
+?>						 -->
             <div class="form-group">
         <button type="submit" id="submit" class="btn btn-primary btn-block"> Create Account  </button>
     </div>  
-<?php 
+<!-- <?php 
 					}
-?>
-    <br>
+?> -->
+
     <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div>
  </form>
 </div>
-<!-- <?php echo '<div id="show-data"></div>'; ?> -->
 
 <!-- <div id="table-container"></div> -->
 <div id="data-container"></div>
 
 
+
+<!--  Update Modal -->
+<div id="updateModalCenter" class="modal fade" role="dialog" >
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <!-- <h4 class="modal-title">Modal Header</h4> -->
+      </div>
+      <div class="modal-body">
+        <!-- <p>Some text in the modal.</p> -->
+        <form id = "basic-form"  action="" method="post" >
+    <label>Full name</label><span id="nameerr" class="error">* </span><br>
+    <input id="update_name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
+    <br>
+    <label>Email</label><span id="emailerr" class="error">* </span><br>
+    <input id="update_email" type="email" name="email" value="<?php if($email !=""){ echo $email; }?>">
+    <br>
+    <label>Phone</label><span id="numbererr" class="error">* </span><br>
+    <input id="update_number" type="text" name="number"  value="<?php if($number !=""){ echo $number; }?>">
+    <br>
+    <label>Password</label><span id="passworderr" class="error">* </span><br>
+    <input id="update_password" type="password" name="password" value="<?php if($password !=""){ echo $password; }?>">
+    <br>
+    <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
+    <input id="update_date" type="date" name="dob" value="<?php if($date !=""){ echo $date; }?>">
+    <br>
+    <label>Address</label><span id="addresserr" class="error">* </span><br>
+    <input id="update_address" type="text" name="address" id="address" value="<?php if($address != ""){ echo $address;} ?>"> 
+    <br>
+    <label>Gender</label><span id="gendererr" class="error">* </span><br>
+    <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender" <?php if('Male'==$gender) echo 'checked'; ?>>
+    <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" <?php if('Female'==$gender) echo 'checked'; ?>> <br>
+    <br>
+            
+    <div class="form-group">
+        <button type="button" id="update"  class="btn btn-primary btn-block" onclick="updateUserDetail()"> Update</button>
+    </div>   
+    <br>
+
+</form>
+
+
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-default" data-dismiss="modal"  >Close</button>
+      </div>
+
+      <?php 
+        echo $id; ?>
+    </div>
+    <div id="show_id" ></div>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script type="text/javascript">
+
   //  function getUserDetails(id){
   //     // id.preventDefault();
   //     var userId = id
@@ -131,7 +188,7 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
     
 
   // };
-   $(document).ready(function(){
+$(document).ready(function(){
  
 $("#submit").click(function(event) {
     event.preventDefault();
@@ -204,9 +261,23 @@ $("#submit").click(function(event) {
   });
 }
 
+// Update data
+$.ajax({
+					            method: "POST",
+                      url: "retrive.php",
+                      data: {
+                      $(".btn-edit").click(function (){
+                        console.log("Edit button clicked");
+                        let id = $(this).attr("data-id");
+                        console.log(id);
+                      })
+                      }
+                    });
+
 
 $("#update").click(function(e){
   e.preventDefault();
+ 
     let name = $("#name").val();
 		let email = $("#email").val();
     let number = $("#number").val();
@@ -241,9 +312,9 @@ $("#update").click(function(e){
 					  })
 
             .done(function() {
-                // alert(msg);
-                // location.reload(true);
-                window.location.href = "./register.php";
+                alert(msg);
+                // // location.reload(true);
+                // window.location.href = "./register.php";
 
                 
                     if(msg != ""){
