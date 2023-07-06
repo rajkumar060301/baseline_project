@@ -18,9 +18,9 @@
 
     <?php
     include './config/config.php';
-    $id =  '<script>document.write(userId)</script>';
+    // $_GET['id'] = $_POST['myValue '];
     if(isset($_GET['id'])){
-    // $id = $_GET['id'];
+    $id = $_GET['id'];
     $type = 'updateid';
 
     $query = "select * from `student` where `id` = {$id}";
@@ -46,7 +46,7 @@
 </head>
 <body>
 <?php 
-if(!isset($_GET['update'])){
+if(!isset($_GET['id'])){
 $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address =""; $gender="";
 
 }
