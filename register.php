@@ -14,35 +14,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
-
-
-    <?php
-    include './config/config.php';
-    // $_GET['id'] = $_POST['id'];
-    if(isset($_GET['id'])){
-    $id = $_GET['id'];
-    $type = 'updateid';
-
-    $query = "select * from `student` where `id` = {$id}";
-    $result = mysqli_query($myConnection,$query);
-    if(mysqli_num_rows($result)>0){
-      $row = mysqli_fetch_assoc($result);
-      $name = $row["fname"];
-      $email= $row["email"];
-      $number = $row["number"];
-      $password = $row["password"];
-      $date = $row["dob"];
-      $address = $row["address"];
-      $gender = $row["gender"];
-
-    }
-    else{
-      echo "wrong id";
-    }
-    }
-
-
-    ?>
 </head>
 <body>
 <?php 
@@ -81,26 +52,15 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
     <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender" <?php if('Male'==$gender) echo 'checked'; ?>>
     <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" <?php if('Female'==$gender) echo 'checked'; ?>> <br>
     <br>
-
-    <!-- <?php if( $id !="" and $type == "update"){  ?>             
-    <div class="form-group">
-        <button type="submit" id="update" class="btn btn-primary btn-block"> Update</button>
-    </div>   
-<?php 
-					}else{
-?>						 -->
             <div class="form-group">
         <button type="submit" id="submit" class="btn btn-primary btn-block"> Create Account  </button>
     </div>  
-<!-- <?php 
-					}
-?> -->
+
 
     <div class="text-center" style="color: black;">Already have an account? <a href="login.html" style="color:blue">Login here</a></div>
  </form>
 </div>
 
-<!-- <div id="table-container"></div> -->
 <div id="data-container"></div>
 
 
@@ -113,82 +73,63 @@ $id = ""; $name=""; $email=""; $number=""; $password=""; $date=""; $address ="";
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <!-- <h4 class="modal-title">Modal Header</h4> -->
       </div>
       <div class="modal-body">
+      <input type="hidden" id="id_edit">
+      <input type="hidden" id="gender" class="gender" value="">
+      
+      <h5 id="show-error"   style="color: red;"><?php echo $id = "<script>document.write(id);</script>" ?></h5>
+
         <!-- <p>Some text in the modal.</p> -->
-        <form id = "basic-form"  action="" method="post" >
+      <form id = "basic-form"  action="" method="post" >
     <label>Full name</label><span id="nameerr" class="error">* </span><br>
-    <input id="update_name" name="fname" minlength="8" type="text" value="<?php if($name !=""){ echo $name; }?>">
+    <input id="update_name" name="fname" minlength="8" type="text" value=""> <?php if($name !=""){ echo $name; }?>
     <br>
     <label>Email</label><span id="emailerr" class="error">* </span><br>
-    <input id="update_email" type="email" name="email" value="<?php if($email !=""){ echo $email; }?>">
+    <input id="update_email" type="email" name="email" value=""> <?php if($email !=""){ echo $email; }?>
     <br>
     <label>Phone</label><span id="numbererr" class="error">* </span><br>
-    <input id="update_number" type="text" name="number"  value="<?php if($number !=""){ echo $number; }?>">
+    <input id="update_number" type="text" name="number"  value=""> <?php if($number !=""){ echo $number; }?>
     <br>
     <label>Password</label><span id="passworderr" class="error">* </span><br>
-    <input id="update_password" type="password" name="password" value="<?php if($password !=""){ echo $password; }?>">
+    <input id="update_password" type="password" name="password" value=""> <?php if($password !=""){ echo $password; }?>
     <br>
     <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
-    <input id="update_date" type="date" name="dob" value="<?php if($date !=""){ echo $date; }?>">
+    <input id="update_date" type="date" name="dob" value=""> <?php if($date !=""){ echo $date; }?>
     <br>
     <label>Address</label><span id="addresserr" class="error">* </span><br>
-    <input id="update_address" type="text" name="address" id="address" value="<?php if($address != ""){ echo $address;} ?>"> 
+    <input id="update_address" type="text" name="address" id="address" value=""> <?php if($address != ""){ echo $address;} ?>
     <br>
     <label>Gender</label><span id="gendererr" class="error">* </span><br>
-    <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender" <?php if('Male'==$gender) echo 'checked'; ?>>
-    <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" <?php if('Female'==$gender) echo 'checked'; ?>> <br>
+    <span>Male</span><input type="radio" name="gender" value="Male" id="update_male" class="update_gender">
+    <span>Female</span><input  type="radio" name="gender" value="Female" id="update_female" class="update_gender" >
+  
+    <br>
     <br>
             
     <div class="form-group">
-        <button type="button" id="update"  class="btn btn-primary btn-block" onclick="updateUserDetail()"> Update</button>
+        <button type="submit" id="update"  class="btn btn-primary btn-block"> Update</button>
     </div>   
     <br>
 
 </form>
-
-
       </div>
       <div class="modal-footer">
         
         <button type="button" class="btn btn-default" data-dismiss="modal"  >Close</button>
       </div>
 
-      <?php 
-        echo $id; ?>
     </div>
+    
     <div id="show_id" ></div>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script type="text/javascript">
 
-  //  function getUserDetails(id){
-  //     // id.preventDefault();
-  //     var userId = id
-   
-  //   //  document.getElementById('show-error').innerHTML +=id;
-  //    alert("your is is:" + id)
-  //   // $('#hidden_user_id').val(id);
-  //   // // console.log(id);
-  //   // $.post("retrive.php",{
-  //   //   id : id
-  //   // },function(data,status){
-  //   //   var user = JSON.parse(data);
-  //   //   $('#update_name').val(user.fname);
-  //   //   $('#update_email').val(user.email);
-  //   //   $('#update_number').val(user.number);
-  //   //   $('#update_password').val(user.password);
-  //   //   $('#update_date').val(user.dob);
-  //   //   $('#update_address').val(user.address);
-  //   //   $('#update_gender').val(user.gender);
-  //   // });
-  //   // $('#update_user_modal').modal('show');
-    
-
-  // };
 $(document).ready(function(){
+
+
  
 $("#submit").click(function(event) {
     event.preventDefault();
@@ -262,69 +203,58 @@ $("#submit").click(function(event) {
 }
 
 // Update data
-$.ajax({
-					            method: "POST",
-                      url: "retrive.php",
-                      data: {
-                      $(".btn-edit").click(function (){
-                        console.log("Edit button clicked");
-                        let id = $(this).attr("data-id");
-                        console.log(id);
-                      })
-                      }
-                    });
 
 
-$("#update").click(function(e){
-  e.preventDefault();
+
+// $("#update").click(function(e){
+//   e.preventDefault();
  
-    let name = $("#name").val();
-		let email = $("#email").val();
-    let number = $("#number").val();
-    let password = $("#password").val();
-		let date = $("#date").val();
-		let address = $("#address").val();
-    var gender = $('.gender').val();
+//     let name = $("#update_name").val();
+// 		let email = $("#update_email").val();
+//     let number = $("#update_number").val();
+//     let password = $("#update_password").val();
+// 		let date = $("#update_date").val();
+// 		let address = $("#update_address").val();
+//     var gender = $('.update_gender').val();
+//         var ele = document.getElementsByName('gender');
+//         var gen_value = "";
+//         for (i = 0; i < ele.length; i++) {
+//             if (ele[i].checked)
+//                 gen_value =  ele[i].value;
+//         }
+//         $.ajax({
+// 					  method: "POST",
+//                       url: "update.php",
+//                       data: {
+//                         action:"update",
+//                         updateid:id, 
+//                         fname:name,
+//                          email:email,
+//                          number:number, 
+//                          password:password, 
+//                          dob:date, 
+//                          address : address,
+//                          gender:gen_value},
+//                           // success : function(){
+//                           //   location.reload(true)
+//                           // }
 
-        var ele = document.getElementsByName('gender');
-        var gen_value = "";
-        for (i = 0; i < ele.length; i++) {
-            if (ele[i].checked)
-                gen_value =  ele[i].value;
-        }
-        $.ajax({
-					  method: "POST",
-                      url: "update.php",
-                      data: {
-                        action:"update",
-                        updateid:id, 
-                        fname:name,
-                         email:email,
-                         number:number, 
-                         password:password, 
-                         dob:date, 
-                         address : address,
-                          gender:gen_value},
-                          // success : function(){
-                          //   location.reload(true)
-                          // }
+// 					  })
 
-					  })
-
-            .done(function() {
-                alert(msg);
-                // // location.reload(true);
-                // window.location.href = "./register.php";
-
-                
-                    if(msg != ""){
-                window.location.href = "register.php";
+//             .done(function() {
+//                 alert(msg);
+//                 // // location.reload(true);
+//                 // window.location.href = "./register.php";
 
                 
-            }
-            });
+//                     if(msg != ""){
+//                 window.location.href = "register.php";
 
-});
+                
+//             }
+//             });
+
+// });
 
 
 });
