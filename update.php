@@ -13,8 +13,7 @@ $gender = $_POST['gender'];
 $query = "UPDATE `student` SET `fname`='$name',`email`='$email',`number`='$number',`password`='$password',`dob`='$dob', `address` = '$address', `gender` = '$gender' WHERE id = {$id}";
 mysqli_query($myConnection,$query);
 echo "Data Updated SuccessFully";
-echo "<script>location.href='register.php'</script>"
-// header('location:register.php');
+
 
 
 ?>
